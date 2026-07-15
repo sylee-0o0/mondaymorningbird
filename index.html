@@ -365,7 +365,34 @@
         }
 
         /* 세부: 여행 */
-        .detail-travel { background: #141418; }
+        .detail-travel {
+            background: #141418;
+            position: relative;
+            overflow: hidden;
+        }
+        /* 카드에 마우스를 올리면 커지는 전체 배경 이미지 레이어 */
+        .travel-backdrop {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transform: scale(1.1);
+            filter: blur(3px) brightness(0.4);
+            transition: opacity 0.5s ease, transform 6s ease;
+            z-index: 0;
+        }
+        .travel-backdrop.active {
+            opacity: 1;
+            transform: scale(1.25);
+        }
+        .detail-travel > .back-link,
+        .detail-travel > .detail-title,
+        .detail-travel > .detail-sub,
+        .detail-travel > .travel-grid {
+            position: relative;
+            z-index: 1;
+        }
         .travel-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -375,16 +402,33 @@
             margin-top: 30px;
         }
         .travel-card {
-            background: #1e1e1e;
+            position: relative;
+            background-color: #1e1e1e;
+            background-size: cover;
+            background-position: center;
             border: 1px solid #2d2d2d;
             border-radius: 20px;
             padding: 32px 20px;
+            overflow: hidden;
+            isolation: isolate;
             transition: transform 0.3s ease;
         }
-        .travel-card:hover { transform: translateY(-6px); }
+        .travel-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.78) 100%);
+            z-index: 0;
+        }
+        .travel-card:hover { transform: translateY(-6px) scale(1.03); }
+        .travel-flag, .travel-card h3, .travel-tag {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+        }
         .travel-flag { font-size: 2.6rem; margin-bottom: 12px; }
-        .travel-card h3 { color: #7c4dff; margin-bottom: 8px; font-size: 1.15rem; }
-        .travel-tag { color: #90a4ae; font-size: 0.9rem; }
+        .travel-card h3 { color: #fff; margin-bottom: 8px; font-size: 1.15rem; }
+        .travel-tag { color: #e0e0e0; font-size: 0.9rem; }
 
         /* 세부: 이불속 인터랙티브 */
         .detail-bed { background: linear-gradient(180deg, #0d0d12 0%, #17171c 100%); }
@@ -402,16 +446,27 @@
             position: absolute;
             inset: 0;
             background: radial-gradient(circle at 50% 30%, #2a2a55 0%, #0d0d16 70%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
+            overflow: hidden;
+        }
+        .scene-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .scene-text {
-            color: #cfd8dc;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 20px 18px;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+            color: #fff;
             font-size: 1rem;
-            line-height: 1.8;
+            line-height: 1.7;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
         }
         .blanket {
             position: absolute;
@@ -547,7 +602,7 @@
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <!-- 홈 이동 로고 -->
-    <a href="#section-1" class="site-logo" aria-label="홈으로 이동">SY</a>
+    <a href="#section-1" class="site-logo" aria-label="홈으로 이동">🏠</a>
 
     <!-- 도트 내비게이션 -->
     <nav class="dot-nav" aria-label="페이지 내비게이션">
@@ -570,7 +625,8 @@
     <!-- 2챕터: 나에 대하여 -->
     <section class="section-2" id="section-2" data-group="section-2">
         <div class="intro-box">
-            <h2>월요일 아침새</h2>
+            <h2>월요일 아침 새</h2>
+            <p>미라클모닝 새 아니고, 그저 월요일 아침을 맞은 지친 새.</p>
             <div class="mini-info">
                 <div><strong>직업</strong><p>쉬고있음 청년</p></div>
                 <div><strong>MBTI</strong><p>ISTP</p></div>
@@ -582,8 +638,8 @@
                 <span class="tag">#미디어호더</span>
                 <span class="tag">#집순이</span>
                 <span class="tag">#이불집사</span>
-                <span class="tag">#카페인러버</span>
-                <span class="tag">#여행꿈나무</span>
+                <span class="tag">#커피=생명수</span>
+                <span class="tag">#역마살보유자</span>
             </div>
 
             <!-- 성향 게이지: --pos 값(0~100%)만 조절하면 위치가 바뀝니다 -->
@@ -604,7 +660,7 @@
     <!-- 3챕터: 취미 생활 (3개의 매칭 이미지 적용) -->
     <section class="section-3" id="section-3" data-group="section-3">
         <h2 style="font-size: 2.2rem; margin-bottom: 10px;">가장 행복한 시간</h2>
-        <p style="color: #90a4ae;">미디어 호더이자 서퍼죠</p>
+        <p style="color: #90a4ae;">저는 미디어 호더이자 서퍼죠</p>
         
         <div class="hobby-container">
             <!-- 1. 영화 보기 -->
@@ -684,8 +740,8 @@
 
     <!-- 4챕터: 소소한 취향 -->
     <section class="section-4" id="section-4" data-group="section-4">
-        <h2 style="font-size: 2.2rem; margin-bottom: 5px;">내가 좋아하는 것들</h2>
-        <p style="color: #90a4ae; margin-bottom: 10px;">클릭하면 더 자세히 볼 수 있어요</p>
+        <h2 style="font-size: 2.2rem; margin-bottom: 10px;">내가 좋아하는 것들</h2>
+        <p style="color: #90a4ae;">클릭하면 더 자세히 볼 수 있어요</p>
         
         <div class="favorite-list">
             <a href="#detail-travel" class="fav-item">
@@ -708,7 +764,7 @@
                 <div class="fav-emoji">🎧</div>
                 <div class="fav-text">
                     <h4>플레이리스트</h4>
-                    <p>요즘 무한 재생 중인 노래들</p>
+                    <p>음악은. . .<br> 나라가 허락한 유일한 마..약..</p>
                 </div>
                 <span class="fav-arrow">→</span>
             </a>
@@ -725,21 +781,23 @@
 
     <!-- 4-1챕터: 여행 세부페이지 -->
     <section class="section-detail detail-travel" id="detail-travel" data-group="section-4">
+        <div class="travel-backdrop" id="travelBackdrop"></div>
         <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
         <h2 class="detail-title">✈️ 여행</h2>
         <p class="detail-sub">좋아하는 여행지</p>
         <div class="travel-grid">
-            <div class="travel-card">
+            <!-- 각 카드의 background-image와 data-bg 경로를 실제 이미지 파일로 바꿔주세요 -->
+            <div class="travel-card" data-bg="./images/thailand.jpg" style="background-image: url('./images/thailand.jpg');">
                 <div class="travel-flag">🇹🇭</div>
                 <h3>태국</h3>
                 <p class="travel-tag">한줄평을 채워주세요</p>
             </div>
-            <div class="travel-card">
+            <div class="travel-card" data-bg="./images/taiwan.jpg" style="background-image: url('./images/taiwan.jpg');">
                 <div class="travel-flag">🇹🇼</div>
                 <h3>대만</h3>
                 <p class="travel-tag">한줄평을 채워주세요</p>
             </div>
-            <div class="travel-card">
+            <div class="travel-card" data-bg="./images/mongolia.jpg" style="background-image: url('./images/mongolia.jpg');">
                 <div class="travel-flag">🇲🇳</div>
                 <h3>몽골</h3>
                 <p class="travel-tag">한줄평을 채워주세요</p>
@@ -754,6 +812,8 @@
         <p class="detail-sub">이불을 살짝 걷어보세요</p>
         <div class="blanket-scene">
             <div class="scene-inside">
+                <!-- 이불속 사진으로 교체해주세요 -->
+                <img src="./images/bed.jpg" alt="이불속 사진" class="scene-img">
                 <p class="scene-text">포근함 100%<br>세상에서 제일 안전한 곳</p>
             </div>
             <div class="blanket" id="blanketToggle">
@@ -761,7 +821,7 @@
             </div>
         </div>
     </section>
-
+ 
     <!-- 4-3챕터: 플레이리스트 세부페이지 (스와이프 캐러셀) -->
     <section class="section-detail detail-playlist" id="detail-playlist" data-group="section-4">
         <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
@@ -772,21 +832,19 @@
                 <div class="video-frame">
                     <iframe src="https://www.youtube.com/embed/UuUBBPUw23E" title="요즘 제일 많이 듣는 노래" allowfullscreen loading="lazy"></iframe>
                 </div>
-                <h4>요즘 제일 많이 듣는 노래</h4>
+                <h4>sharon loves bigmac</h4>
             </div>
             <div class="playlist-card">
                 <div class="video-frame">
-                    <!-- 고고학 플레이리스트 영상 ID로 교체해주세요 -->
-                    <iframe src="https://www.youtube.com/embed/여기에_고고학플리_영상ID" title="고고학 플레이리스트" allowfullscreen loading="lazy"></iframe>
+                    <iframe src="https://www.youtube-nocookie.com/embed/iun9wULSA3I?si=rkVp-ebCjv8_UFmR" title="고고학 플레이리스트" allowfullscreen loading="lazy"></iframe>
                 </div>
-                <h4>고고학 플레이리스트</h4>
+                <h4>GOGOHAWK</h4>
             </div>
             <div class="playlist-card">
                 <div class="video-frame">
-                    <!-- 세 번째 플레이리스트 영상 ID로 교체해주세요 -->
-                    <iframe src="https://www.youtube.com/embed/여기에_영상ID_입력" title="플레이리스트 3" allowfullscreen loading="lazy"></iframe>
+                    <iframe src="https://www.youtube-nocookie.com/embed/BmCWCS274VU?si=9qnTBkt1nX1h7OWQ" title="김수영 플레이리스트" allowfullscreen loading="lazy"></iframe>
                 </div>
-                <h4>+ 하나 더 추가해보세요</h4>
+                <h4>Kim Suyoung</h4>
             </div>
         </div>
         <div class="carousel-dots" id="carouselDots"></div>
@@ -812,6 +870,10 @@
             </div>
             <div class="burger-row">
                 <span class="burger-brand">맘스터치</span>
+                <span class="burger-name">메뉴를 적어주세요</span>
+            </div>
+            <div class="burger-row">
+                <span class="burger-brand">브랜드명을 적어주세요</span>
                 <span class="burger-name">메뉴를 적어주세요</span>
             </div>
         </div>
