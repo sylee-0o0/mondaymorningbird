@@ -366,24 +366,23 @@
 
         /* 세부: 여행 */
         .detail-travel { background: #141418; }
-        /* 카드에 마우스를 올리면 화면 전체에 크게 뜨는 이미지 오버레이 */
-        .travel-overlay {
-            position: fixed;
+        /* 카드에 마우스를 올리면 콘텐츠 '뒤'에 반투명하게 깔리는 이미지 */
+        .travel-backdrop {
+            position: absolute;
             inset: 0;
             background-size: cover;
             background-position: center;
             opacity: 0;
-            pointer-events: none;
-            z-index: 65;
-            transition: opacity 0.4s ease;
+            z-index: 0;
+            transition: opacity 0.5s ease;
         }
-        .travel-overlay::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
+        .travel-backdrop.active { opacity: 0.65; }
+        .detail-travel > .detail-title,
+        .detail-travel > .detail-sub,
+        .detail-travel > .travel-grid {
+            position: relative;
+            z-index: 1;
         }
-        .travel-overlay.active { opacity: 1; }
         .travel-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -592,9 +591,6 @@
     <!-- 전체 스크롤 진행률 -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
-    <!-- 여행 카드 호버 시 화면 전체에 뜨는 이미지 오버레이 (섹션 밖, 전역 요소) -->
-    <div class="travel-overlay" id="travelOverlay"></div>
-
     <!-- 홈 이동 로고 -->
     <a href="#section-1" class="site-logo" aria-label="홈으로 이동">🏠</a>
 
@@ -774,6 +770,7 @@
 
     <!-- 4-1챕터: 여행 세부페이지 -->
     <section class="section-detail detail-travel" id="detail-travel" data-group="section-4">
+        <div class="travel-backdrop" id="travelBackdrop"></div>
         <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
         <h2 class="detail-title">✈️ 여행</h2>
         <p class="detail-sub">좋아하는 여행지</p>
@@ -913,9 +910,9 @@
             groups.forEach(g => observer.observe(g));
         })();
 
-        // 여행 카드 호버 시 화면 전체에 이미지 오버레이 표시
+        // 여행 카드 호버 시 콘텐츠 뒤에 반투명 배경 이미지 표시
         (function () {
-            const overlay = document.getElementById('travelOverlay');
+            const backdrop = document.getElementById('travelBackdrop');
             const cards = document.querySelectorAll('.travel-card[data-bg]');
             if (!cards.length) return;
 
@@ -924,14 +921,14 @@
                 card.style.backgroundImage = `url('${card.dataset.bg}')`;
             });
 
-            if (!overlay) return;
+            if (!backdrop) return;
             cards.forEach(card => {
                 card.addEventListener('mouseenter', () => {
-                    overlay.style.backgroundImage = `url('${card.dataset.bg}')`;
-                    overlay.classList.add('active');
+                    backdrop.style.backgroundImage = `url('${card.dataset.bg}')`;
+                    backdrop.classList.add('active');
                 });
                 card.addEventListener('mouseleave', () => {
-                    overlay.classList.remove('active');
+                    backdrop.classList.remove('active');
                 });
             });
         })();
