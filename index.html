@@ -393,9 +393,7 @@
         }
         .travel-card {
             position: relative;
-            background-color: #1e1e1e;
-            background-size: cover;
-            background-position: center;
+            background-color: rgba(30, 30, 30, 0.5);
             border: 1px solid #2d2d2d;
             border-radius: 20px;
             padding: 32px 20px;
@@ -403,18 +401,30 @@
             isolation: isolate;
             transition: transform 0.3s ease;
         }
+        /* 카드 사진 레이어: 반투명해서 뒤 배경이 비쳐 보임 */
         .travel-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.78) 100%);
+            background-image: var(--card-img);
+            background-size: cover;
+            background-position: center;
+            opacity: 0.45;
+            z-index: 0;
+        }
+        /* 텍스트 가독성용 그라데이션 */
+        .travel-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.65) 100%);
             z-index: 0;
         }
         .travel-card:hover { transform: translateY(-6px) scale(1.03); }
         .travel-flag, .travel-card h3, .travel-tag {
             position: relative;
             z-index: 1;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
         }
         .travel-flag { font-size: 2.6rem; margin-bottom: 12px; }
         .travel-card h3 { color: #fff; margin-bottom: 8px; font-size: 1.15rem; }
@@ -508,9 +518,30 @@
         }
         .video-frame iframe { width: 100%; height: 100%; border: 0; }
         .playlist-card h4 { color: #cfd8dc; font-size: 1rem; }
-        .carousel-dots { display: flex; gap: 8px; margin-top: 10px; }
-        .c-dot { width: 7px; height: 7px; border-radius: 50%; background: #3a3a42; transition: all 0.25s ease; }
+        .carousel-dots { display: flex; gap: 8px; }
+        .c-dot { width: 7px; height: 7px; border-radius: 50%; background: #3a3a42; transition: all 0.25s ease; cursor: pointer; }
         .c-dot.active { background: #7c4dff; width: 20px; border-radius: 4px; }
+        /* 캐러셀 이전/다음 버튼: 배경 없는 얇은 화살표 */
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 14px;
+        }
+        .carousel-btn {
+            background: none;
+            border: none;
+            color: #78808a;
+            font-size: 1.3rem;
+            line-height: 1;
+            padding: 4px 6px;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .carousel-btn:hover {
+            color: #7c4dff;
+            transform: scale(1.15);
+        }
 
         /* 세부: 버거 */
         .detail-burger { background: #18181c; }
@@ -836,14 +867,18 @@
                 <h4>Kim Suyoung</h4>
             </div>
         </div>
-        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="carousel-controls">
+            <button class="carousel-btn" id="carouselPrev" aria-label="이전 곡">‹</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="carousel-btn" id="carouselNext" aria-label="다음 곡">›</button>
+        </div>
     </section>
 
     <!-- 4-4챕터: 버거 세부페이지 -->
     <section class="section-detail detail-burger" id="detail-burger" data-group="section-4">
         <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
         <h2 class="detail-title">🍔 HAMBURGER LOVER</h2>
-        <p class="detail-sub">브랜드별 최애 메뉴</p>
+        <p class="detail-sub">지금 당장 먹고싶은 햄버거는?</p>
         <div class="burger-list">
             <div class="burger-row">
                 <span class="burger-brand">버거킹</span>
@@ -916,9 +951,9 @@
             const cards = document.querySelectorAll('.travel-card[data-bg]');
             if (!cards.length) return;
 
-            // 카드 자체 배경 이미지는 data-bg 값으로 자동 설정
+            // 카드 사진 레이어(::before)는 --card-img 변수 값으로 자동 설정
             cards.forEach(card => {
-                card.style.backgroundImage = `url('${card.dataset.bg}')`;
+                card.style.setProperty('--card-img', `url('${card.dataset.bg}')`);
             });
 
             if (!backdrop) return;
@@ -950,6 +985,9 @@
             cards.forEach((_, i) => {
                 const d = document.createElement('span');
                 d.className = 'c-dot' + (i === 0 ? ' active' : '');
+                d.addEventListener('click', () => {
+                    carousel.scrollTo({ left: carousel.clientWidth * i, behavior: 'smooth' });
+                });
                 dotsWrap.appendChild(d);
             });
             const dots = dotsWrap.querySelectorAll('.c-dot');
@@ -957,6 +995,20 @@
                 const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             }, { passive: true });
+
+            // 이전/다음 버튼
+            const prevBtn = document.getElementById('carouselPrev');
+            const nextBtn = document.getElementById('carouselNext');
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: -carousel.clientWidth, behavior: 'smooth' });
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: carousel.clientWidth, behavior: 'smooth' });
+                });
+            }
         })();
     </script>
 
