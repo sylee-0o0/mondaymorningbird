@@ -592,6 +592,9 @@
     <!-- 전체 스크롤 진행률 -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
+    <!-- 여행 카드 호버 시 화면 전체에 뜨는 이미지 오버레이 (섹션 밖, 전역 요소) -->
+    <div class="travel-overlay" id="travelOverlay"></div>
+
     <!-- 홈 이동 로고 -->
     <a href="#section-1" class="site-logo" aria-label="홈으로 이동">🏠</a>
 
@@ -771,23 +774,22 @@
 
     <!-- 4-1챕터: 여행 세부페이지 -->
     <section class="section-detail detail-travel" id="detail-travel" data-group="section-4">
-        <div class="travel-backdrop" id="travelBackdrop"></div>
         <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
         <h2 class="detail-title">✈️ 여행</h2>
         <p class="detail-sub">좋아하는 여행지</p>
         <div class="travel-grid">
-            <!-- 각 카드의 background-image와 data-bg 경로를 실제 이미지 파일로 바꿔주세요 -->
+            <!-- 이미지 경로는 data-bg 딱 한 군데만 적으면 됩니다 -->
             <div class="travel-card" data-bg="./images/wombat.jpg">
                 <div class="travel-flag">🇹🇭</div>
                 <h3>태국</h3>
                 <p class="travel-tag">제 2의 고향</p>
             </div>
-            <div class="travel-card" data-bg="./images/mondaymorningbird.png" style="background-image: url('./images/mondaymorningbird.png');">
+            <div class="travel-card" data-bg="./images/mondaymorningbird.png">
                 <div class="travel-flag">🇹🇼</div>
                 <h3>대만</h3>
                 <p class="travel-tag">푸르고 자유로운 미식 천국</p>
             </div>
-            <div class="travel-card" data-bg="./images/mondaymorningbird2.jpg" style="background-image: url('./images/mondaymorningbird2.jpg');">
+            <div class="travel-card" data-bg="./images/mondaymorningbird2.jpg">
                 <div class="travel-flag">🇲🇳</div>
                 <h3>몽골</h3>
                 <p class="travel-tag">광활한 자연과 쏟아지는 별</p>
@@ -909,6 +911,29 @@
             }, { threshold: 0.6 });
 
             groups.forEach(g => observer.observe(g));
+        })();
+
+        // 여행 카드 호버 시 화면 전체에 이미지 오버레이 표시
+        (function () {
+            const overlay = document.getElementById('travelOverlay');
+            const cards = document.querySelectorAll('.travel-card[data-bg]');
+            if (!cards.length) return;
+
+            // 카드 자체 배경 이미지는 data-bg 값으로 자동 설정
+            cards.forEach(card => {
+                card.style.backgroundImage = `url('${card.dataset.bg}')`;
+            });
+
+            if (!overlay) return;
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    overlay.style.backgroundImage = `url('${card.dataset.bg}')`;
+                    overlay.classList.add('active');
+                });
+                card.addEventListener('mouseleave', () => {
+                    overlay.classList.remove('active');
+                });
+            });
         })();
 
         // 이불속 인터랙티브 토글
