@@ -36,6 +36,89 @@
             text-decoration: underline;
         }
 
+        /* ===== 스크롤 진행률 바 ===== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: #7c4dff;
+            z-index: 70;
+            transition: width 0.1s linear;
+        }
+
+        /* ===== 홈 로고 버튼 ===== */
+        .site-logo {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 60;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #1e1e24;
+            border: 1px solid #2d2d35;
+            color: #cfd8dc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+        }
+        .site-logo:hover {
+            color: #7c4dff;
+            border-color: #7c4dff;
+            text-decoration: none;
+        }
+
+        /* ===== 도트 내비게이션 ===== */
+        .dot-nav {
+            position: fixed;
+            top: 50%;
+            right: 28px;
+            transform: translateY(-50%);
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .dot-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .dot-link .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #3a3a42;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+        .dot-link .dot-label {
+            font-size: 0.78rem;
+            color: #cfd8dc;
+            opacity: 0;
+            transform: translateX(6px);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+        .dot-link:hover, .dot-link:hover .dot-label { text-decoration: none; }
+        .dot-link:hover .dot-label,
+        .dot-link.active .dot-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .dot-link:hover .dot,
+        .dot-link.active .dot {
+            background: #7c4dff;
+            box-shadow: 0 0 0 4px rgba(124, 77, 255, 0.18);
+        }
+
         /* 각 챕터 스타일 */
         section {
             width: 100%;
@@ -108,6 +191,57 @@
             color: #90a4ae;
         }
 
+        /* 2챕터 추가: 키워드 태그 클라우드 */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+        .tag {
+            background: #252529;
+            color: #b39ddb;
+            border: 1px solid #33313f;
+            padding: 7px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* 2챕터 추가: 성향 게이지 바 */
+        .trait-gauges {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-top: 1px solid #2d2d35;
+            padding-top: 22px;
+        }
+        .gauge-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #90a4ae;
+            margin-bottom: 10px;
+        }
+        .gauge-track {
+            position: relative;
+            height: 6px;
+            border-radius: 4px;
+            background: #2d2d35;
+        }
+        .gauge-fill {
+            position: absolute;
+            top: 50%;
+            left: var(--pos, 50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #7c4dff;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 0 4px rgba(124, 77, 255, 0.18);
+        }
+
         /* 3챕터: 취미 3단 카드 (가로 배치) */
         .hobby-container {
             display: flex;
@@ -165,9 +299,25 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+        a.fav-item:link, a.fav-item:visited {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        a.fav-item:hover {
+            color: #ffffff;
+            text-decoration: none;
+            transform: translateY(-4px);
+            border-color: #7c4dff;
         }
         .fav-emoji {
             font-size: 2rem;
+        }
+        .fav-text {
+            flex: 1;
         }
         .fav-text h4 {
             font-size: 1.1rem;
@@ -177,6 +327,167 @@
             font-size: 0.9rem;
             color: #90a4ae;
         }
+        .fav-arrow {
+            color: #7c4dff;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: all 0.25s ease;
+        }
+        .fav-item:hover .fav-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ===== 세부 페이지 공통 ===== */
+        .section-detail { }
+        .back-link {
+            position: absolute;
+            top: 30px;
+            left: 84px;
+            font-size: 0.9rem;
+        }
+        .back-link:link, .back-link:visited {
+            color: #78808a;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: #7c4dff;
+            text-decoration: none;
+        }
+        .detail-title {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+        .detail-sub {
+            color: #90a4ae;
+            margin-bottom: 6px;
+        }
+
+        /* 세부: 여행 */
+        .detail-travel { background: #141418; }
+        .travel-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 30px;
+        }
+        .travel-card {
+            background: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 20px;
+            padding: 32px 20px;
+            transition: transform 0.3s ease;
+        }
+        .travel-card:hover { transform: translateY(-6px); }
+        .travel-flag { font-size: 2.6rem; margin-bottom: 12px; }
+        .travel-card h3 { color: #7c4dff; margin-bottom: 8px; font-size: 1.15rem; }
+        .travel-tag { color: #90a4ae; font-size: 0.9rem; }
+
+        /* 세부: 이불속 인터랙티브 */
+        .detail-bed { background: linear-gradient(180deg, #0d0d12 0%, #17171c 100%); }
+        .blanket-scene {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            max-width: 80vw;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-top: 26px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .scene-inside {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, #2a2a55 0%, #0d0d16 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .scene-text {
+            color: #cfd8dc;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .blanket {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, #7c4dff 0%, #4a2fb0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 24px;
+            transition: transform 0.6s cubic-bezier(.65,0,.35,1);
+        }
+        .blanket.open { transform: translateY(-100%); }
+        .blanket-hint {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            padding: 0 24px;
+        }
+
+        /* 세부: 플레이리스트 캐러셀 */
+        .detail-playlist { background: #121212; }
+        .playlist-carousel {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            max-width: 640px;
+            width: 100%;
+            padding: 26px 10px 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .playlist-carousel::-webkit-scrollbar { display: none; }
+        .playlist-card {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+        .video-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .video-frame iframe { width: 100%; height: 100%; border: 0; }
+        .playlist-card h4 { color: #cfd8dc; font-size: 1rem; }
+        .carousel-dots { display: flex; gap: 8px; margin-top: 10px; }
+        .c-dot { width: 7px; height: 7px; border-radius: 50%; background: #3a3a42; transition: all 0.25s ease; }
+        .c-dot.active { background: #7c4dff; width: 20px; border-radius: 4px; }
+
+        /* 세부: 버거 */
+        .detail-burger { background: #18181c; }
+        .burger-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 480px;
+            width: 100%;
+            margin-top: 28px;
+        }
+        .burger-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 14px;
+            padding: 16px 22px;
+        }
+        .burger-brand { color: #7c4dff; font-weight: 700; font-size: 0.95rem; }
+        .burger-name { color: #cfd8dc; font-size: 0.95rem; }
 
         /* 5챕터: 연락처 */
         .contact-btn {
@@ -208,12 +519,47 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .dot-nav {
+                top: auto;
+                bottom: 18px;
+                right: 50%;
+                transform: translateX(50%);
+                flex-direction: row;
+                gap: 14px;
+                background: rgba(30,30,36,0.85);
+                padding: 10px 16px;
+                border-radius: 30px;
+                backdrop-filter: blur(6px);
+            }
+            .dot-nav .dot-label { display: none; }
+            .site-logo { width: 38px; height: 38px; font-size: 0.8rem; top: 16px; left: 16px; }
+            .back-link { left: 20px; top: 20px; }
+            .travel-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- 전체 스크롤 진행률 -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- 홈 이동 로고 -->
+    <a href="#section-1" class="site-logo" aria-label="홈으로 이동">SY</a>
+
+    <!-- 도트 내비게이션 -->
+    <nav class="dot-nav" aria-label="페이지 내비게이션">
+        <a href="#section-1" class="dot-link" data-target="section-1"><span class="dot"></span><span class="dot-label">홈</span></a>
+        <a href="#section-2" class="dot-link" data-target="section-2"><span class="dot"></span><span class="dot-label">소개</span></a>
+        <a href="#section-3" class="dot-link" data-target="section-3"><span class="dot"></span><span class="dot-label">취미</span></a>
+        <a href="#section-4" class="dot-link" data-target="section-4"><span class="dot"></span><span class="dot-label">취향</span></a>
+        <a href="#section-5" class="dot-link" data-target="section-5"><span class="dot"></span><span class="dot-label">연락처</span></a>
+    </nav>
+
     <!-- 1챕터: 인트로 (안경 쓴 쏙독새) -->
-    <section class="section-1">
+    <section class="section-1" id="section-1" data-group="section-1">
         <!-- 뿔테 안경을 쓴 귀여운 개구리입쏙독새 대표 이미지 -->
         <img src="./images/mmb.png" alt="검정 얇은 뿔테 안경을 쓴 개구리입쏙독새 캐릭터" class="profile-main">
         <h1 class="main-title">안녕하세요,</h1>
@@ -222,23 +568,41 @@
     </section>
 
     <!-- 2챕터: 나에 대하여 -->
-    <section class="section-2">
+    <section class="section-2" id="section-2" data-group="section-2">
         <div class="intro-box">
             <h2>월요일 아침새</h2>
-            <p>
-                
-            </p>
             <div class="mini-info">
                 <div><strong>직업</strong><p>쉬고있음 청년</p></div>
                 <div><strong>MBTI</strong><p>ISTP</p></div>
                 <div><strong>서식지</strong><p>겨울철 이불 속</p></div>
+            </div>
+
+            <!-- 키워드 태그 클라우드: 원하는 키워드로 자유롭게 수정하세요 -->
+            <div class="tag-cloud">
+                <span class="tag">#미디어호더</span>
+                <span class="tag">#집순이</span>
+                <span class="tag">#이불집사</span>
+                <span class="tag">#카페인러버</span>
+                <span class="tag">#여행꿈나무</span>
+            </div>
+
+            <!-- 성향 게이지: --pos 값(0~100%)만 조절하면 위치가 바뀝니다 -->
+            <div class="trait-gauges">
+                <div class="gauge">
+                    <div class="gauge-labels"><span>집순이</span><span>밖순이</span></div>
+                    <div class="gauge-track"><div class="gauge-fill" style="--pos:25%"></div></div>
+                </div>
+                <div class="gauge">
+                    <div class="gauge-labels"><span>계획형</span><span>즉흥형</span></div>
+                    <div class="gauge-track"><div class="gauge-fill" style="--pos:60%"></div></div>
+                </div>
             </div>
         </div>
         <div class="scroll-down">한 번 더 아래로... ▽</div>
     </section>
 
     <!-- 3챕터: 취미 생활 (3개의 매칭 이미지 적용) -->
-    <section class="section-3">
+    <section class="section-3" id="section-3" data-group="section-3">
         <h2 style="font-size: 2.2rem; margin-bottom: 10px;">가장 행복한 시간</h2>
         <p style="color: #90a4ae;">미디어 호더이자 서퍼죠</p>
         
@@ -319,50 +683,208 @@
     </section>
 
     <!-- 4챕터: 소소한 취향 -->
-    <section class="section-4">
+    <section class="section-4" id="section-4" data-group="section-4">
         <h2 style="font-size: 2.2rem;">내가 좋아하는 것들</h2>
-        <p style="color: #90a4ae; margin-bottom: 10px;"></p>
+        <p style="color: #90a4ae; margin-bottom: 10px;">클릭하면 더 자세히 볼 수 있어요</p>
         
         <div class="favorite-list">
-            <div class="fav-item">
-                <div class="fav-emoji">☕</div>
+            <a href="#detail-travel" class="fav-item">
+                <div class="fav-emoji">✈️</div>
                 <div class="fav-text">
-                    <h4>아이스 아메리카노</h4>
-                    <p>생명수죠. 하루에 두잔도 가능해요.</p>
+                    <h4>여행</h4>
+                    <p>태국 · 대만 · 몽골 그리고 다음 어딘가</p>
                 </div>
-            </div>
-            <div class="fav-item">
+                <span class="fav-arrow">→</span>
+            </a>
+            <a href="#detail-bed" class="fav-item">
                 <div class="fav-emoji">🛌</div>
                 <div class="fav-text">
-                    <h4>잘 정돈된 폭신한 이불</h4>
-                    <p>내 방 침대 안이 전 세상에서 가장 안전하고 아늑한 대피소.</p>
+                    <h4>이불속 대피소</h4>
+                    <p>내 방 침대 안, 세상에서 가장 안전한 곳</p>
                 </div>
-            </div>
-            <div class="fav-item">
+                <span class="fav-arrow">→</span>
+            </a>
+            <a href="#detail-playlist" class="fav-item">
                 <div class="fav-emoji">🎧</div>
                 <div class="fav-text">
-                    <h4>로파이 플레이리스트</h4>
-                    <p>책을 읽거나 멍때릴 때 배경음으로 틀어두는 잔잔한 비트.</p>
+                    <h4>플레이리스트</h4>
+                    <p>요즘 무한 재생 중인 노래들</p>
                 </div>
-            </div>
-            <div class="fav-item">
+                <span class="fav-arrow">→</span>
+            </a>
+            <a href="#detail-burger" class="fav-item">
                 <div class="fav-emoji">🍔</div>
                 <div class="fav-text">
                     <h4>HAMBURGER LOVER</h4>
-                    <p>햄버거는 하루 종일 먹을 수도 있고 <br>
-                        한 번에 세 개도? 가능하죠.</p>
+                    <p>프랜차이즈별 최애 버거 랭킹</p>
                 </div>
+                <span class="fav-arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- 4-1챕터: 여행 세부페이지 -->
+    <section class="section-detail detail-travel" id="detail-travel" data-group="section-4">
+        <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
+        <h2 class="detail-title">✈️ 여행</h2>
+        <p class="detail-sub">다녀온 곳, 또 가고싶은 곳</p>
+        <div class="travel-grid">
+            <div class="travel-card">
+                <div class="travel-flag">🇹🇭</div>
+                <h3>태국</h3>
+                <p class="travel-tag">한줄평을 채워주세요</p>
+            </div>
+            <div class="travel-card">
+                <div class="travel-flag">🇹🇼</div>
+                <h3>대만</h3>
+                <p class="travel-tag">한줄평을 채워주세요</p>
+            </div>
+            <div class="travel-card">
+                <div class="travel-flag">🇲🇳</div>
+                <h3>몽골</h3>
+                <p class="travel-tag">한줄평을 채워주세요</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4-2챕터: 이불속 세부페이지 (인터랙티브) -->
+    <section class="section-detail detail-bed" id="detail-bed" data-group="section-4">
+        <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
+        <h2 class="detail-title">🛌 이불속 대피소</h2>
+        <p class="detail-sub">이불을 살짝 걷어보세요</p>
+        <div class="blanket-scene">
+            <div class="scene-inside">
+                <p class="scene-text">포근함 100%<br>세상에서 제일 안전한 곳</p>
+            </div>
+            <div class="blanket" id="blanketToggle">
+                <span class="blanket-hint">👆 눌러서 이불 걷기</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4-3챕터: 플레이리스트 세부페이지 (스와이프 캐러셀) -->
+    <section class="section-detail detail-playlist" id="detail-playlist" data-group="section-4">
+        <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
+        <h2 class="detail-title">🎧 플레이리스트</h2>
+        <p class="detail-sub">← 옆으로 넘겨서 다음 곡 확인 →</p>
+        <div class="playlist-carousel" id="playlistCarousel">
+            <div class="playlist-card">
+                <div class="video-frame">
+                    <iframe src="https://www.youtube.com/embed/UuUBBPUw23E" title="요즘 제일 많이 듣는 노래" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <h4>요즘 제일 많이 듣는 노래</h4>
+            </div>
+            <div class="playlist-card">
+                <div class="video-frame">
+                    <!-- 고고학 플레이리스트 영상 ID로 교체해주세요 -->
+                    <iframe src="https://www.youtube.com/embed/여기에_고고학플리_영상ID" title="고고학 플레이리스트" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <h4>고고학 플레이리스트</h4>
+            </div>
+            <div class="playlist-card">
+                <div class="video-frame">
+                    <!-- 세 번째 플레이리스트 영상 ID로 교체해주세요 -->
+                    <iframe src="https://www.youtube.com/embed/여기에_영상ID_입력" title="플레이리스트 3" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <h4>+ 하나 더 추가해보세요</h4>
+            </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+    </section>
+
+    <!-- 4-4챕터: 버거 세부페이지 -->
+    <section class="section-detail detail-burger" id="detail-burger" data-group="section-4">
+        <a href="#section-4" class="back-link">← 취향으로 돌아가기</a>
+        <h2 class="detail-title">🍔 프랜차이즈별 최애 버거</h2>
+        <p class="detail-sub">브랜드별 최애 메뉴를 적어보세요</p>
+        <div class="burger-list">
+            <div class="burger-row">
+                <span class="burger-brand">맥도날드</span>
+                <span class="burger-name">메뉴를 적어주세요</span>
+            </div>
+            <div class="burger-row">
+                <span class="burger-brand">버거킹</span>
+                <span class="burger-name">메뉴를 적어주세요</span>
+            </div>
+            <div class="burger-row">
+                <span class="burger-brand">롯데리아</span>
+                <span class="burger-name">메뉴를 적어주세요</span>
+            </div>
+            <div class="burger-row">
+                <span class="burger-brand">맘스터치</span>
+                <span class="burger-name">메뉴를 적어주세요</span>
             </div>
         </div>
     </section>
 
     <!-- 5챕터: 연락처 및 방명록 링크 -->
-    <section class="section-5">
+    <section class="section-5" id="section-5" data-group="section-5">
         <h2 style="font-size: 2.5rem; margin-bottom: 15px;">봐주셔서 감사합니다.</h2>
         <p style="color: #90a4ae;">☘️행복하세요🍀</p>
         <a href="mailto:sylee.aiax@gmail.com" class="contact-btn">Contact me ✉️</a>
         <p style="margin-top: 30px; font-size: 0.9rem; color: #546e7a;">© Soyoon-Lee. All rights reserved.</p>
     </section>
+
+    <script>
+        // 스크롤 진행률 바
+        (function () {
+            const bar = document.getElementById('scrollProgress');
+            function update() {
+                const h = document.documentElement;
+                const scrolled = h.scrollTop;
+                const max = h.scrollHeight - h.clientHeight;
+                bar.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + '%';
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
+
+        // 도트 내비게이션 활성 상태 갱신
+        (function () {
+            const groups = document.querySelectorAll('[data-group]');
+            const links = document.querySelectorAll('.dot-link');
+            const map = {};
+            links.forEach(l => map[l.dataset.target] = l);
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        links.forEach(l => l.classList.remove('active'));
+                        const target = entry.target.dataset.group;
+                        if (map[target]) map[target].classList.add('active');
+                    }
+                });
+            }, { threshold: 0.6 });
+
+            groups.forEach(g => observer.observe(g));
+        })();
+
+        // 이불속 인터랙티브 토글
+        (function () {
+            const blanket = document.getElementById('blanketToggle');
+            if (blanket) {
+                blanket.addEventListener('click', () => blanket.classList.toggle('open'));
+            }
+        })();
+
+        // 플레이리스트 캐러셀 도트
+        (function () {
+            const carousel = document.getElementById('playlistCarousel');
+            const dotsWrap = document.getElementById('carouselDots');
+            if (!carousel || !dotsWrap) return;
+            const cards = carousel.querySelectorAll('.playlist-card');
+            cards.forEach((_, i) => {
+                const d = document.createElement('span');
+                d.className = 'c-dot' + (i === 0 ? ' active' : '');
+                dotsWrap.appendChild(d);
+            });
+            const dots = dotsWrap.querySelectorAll('.c-dot');
+            carousel.addEventListener('scroll', () => {
+                const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+            }, { passive: true });
+        })();
+    </script>
 
 </body>
 </html>
