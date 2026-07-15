@@ -177,7 +177,7 @@
             color: #7c4dff;
         }
         .intro-box p {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             line-height: 1.8;
             color: #cfd8dc;
             margin-bottom: 20px;
@@ -365,33 +365,25 @@
         }
 
         /* 세부: 여행 */
-        .detail-travel {
-            background: #141418;
-            position: relative;
-            overflow: hidden;
-        }
-        /* 카드에 마우스를 올리면 커지는 전체 배경 이미지 레이어 */
-        .travel-backdrop {
-            position: absolute;
+        .detail-travel { background: #141418; }
+        /* 카드에 마우스를 올리면 화면 전체에 크게 뜨는 이미지 오버레이 */
+        .travel-overlay {
+            position: fixed;
             inset: 0;
             background-size: cover;
             background-position: center;
             opacity: 0;
-            transform: scale(1.1);
-            filter: blur(3px) brightness(0.4);
-            transition: opacity 0.5s ease, transform 6s ease;
-            z-index: 0;
+            pointer-events: none;
+            z-index: 65;
+            transition: opacity 0.4s ease;
         }
-        .travel-backdrop.active {
-            opacity: 1;
-            transform: scale(1.25);
+        .travel-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
         }
-        .detail-travel > .detail-title,
-        .detail-travel > .detail-sub,
-        .detail-travel > .travel-grid {
-            position: relative;
-            z-index: 1;
-        }
+        .travel-overlay.active { opacity: 1; }
         .travel-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -665,7 +657,7 @@
             <div class="hobby-card">
                 <!-- TV 앞에서 영화를 보고 있는 쏙독새 -->
                 <a href="https://youtu.be/c51ND9Hdbw0?si=E-dJifMQxqXWW33f" target="_blank">
-                    <img src="./images/mmb toystory.png" alt="영화관 스크린 앞에서 팝콘 각을 잡고 있는 쏙독새" class="hobby-img">
+                    <img src="./images/mmb toystory.png" title="클릭해 보세요."alt="영화관 스크린 앞에서 팝콘 각을 잡고 있는 쏙독새" class="hobby-img">
                 </a>
                 <div class="hobby-info">
                     <h3>1. 영화 볼 때</h3>
@@ -689,7 +681,7 @@
             <div class="hobby-card">
                 <!-- 소파에서 편하게 드라마를 연속재생하는 쏙독새 -->
                 <a href="https://youtu.be/Ai8E2ghOfzQ?si=XiYRoZGol9pRfW4Z" target="_blank">
-                    <img src="./images/mmb miranda.png" alt="연속 재생 중인 드라마 TV를 바라보는 쏙독새" class="hobby-img">
+                    <img src="./images/mmb miranda.png" title="클릭해 보세요." alt="연속 재생 중인 드라마 TV를 바라보는 쏙독새" class="hobby-img">
                 </a>
                 <div class="hobby-info">
                     <h3>2. 드라마 볼 때</h3>
@@ -713,7 +705,7 @@
             <div class="hobby-card">
                 <!-- 컴퓨터 모니터 앞에서 유튜브를 검색하는 쏙독새 -->
                 <a href="https://youtu.be/DNAj0IlIs7s?si=on2uyLjJHdN4BpUS" target="_blank">
-                    <img src="./images/mmb youtube.png" alt="컴퓨터 모니터 앞에서 마우스를 쥐고 유튜브를 정독하는 쏙독새" class="hobby-img">
+                    <img src="./images/mmb youtube.png" title="클릭해 보세요." alt="컴퓨터 모니터 앞에서 마우스를 쥐고 유튜브를 정독하는 쏙독새" class="hobby-img">
                 </a>
                 <div class="hobby-info">
                     <h3>3. 유튜브 볼 때</h3>
@@ -785,7 +777,7 @@
         <p class="detail-sub">좋아하는 여행지</p>
         <div class="travel-grid">
             <!-- 각 카드의 background-image와 data-bg 경로를 실제 이미지 파일로 바꿔주세요 -->
-            <div class="travel-card" data-bg="./images/wombat.jpg" style="background-image: url('./images/wombat.jpg');">
+            <div class="travel-card" data-bg="./images/wombat.jpg">
                 <div class="travel-flag">🇹🇭</div>
                 <h3>태국</h3>
                 <p class="travel-tag">제 2의 고향</p>
@@ -811,7 +803,7 @@
         <div class="blanket-scene">
             <div class="scene-inside">
                 <!-- 이불속 사진으로 교체해주세요 -->
-                <img src="./images/mmb.jpg" alt="이불속 사진" class="scene-img">
+                <img src="./images/mmb.png" alt="이불속 사진" class="scene-img">
                 <p class="scene-text">포근함 100%<br>세상에서 제일 안전한 곳</p>
             </div>
             <div class="blanket" id="blanketToggle">
