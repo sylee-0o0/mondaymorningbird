@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/mondaymorningbird/rock-paper-scissors-game/static/css/main.90ef2b56.css",
+    "main.js": "/mondaymorningbird/rock-paper-scissors-game/static/js/main.5fdf163e.js",
+    "static/js/453.1041aac1.chunk.js": "/mondaymorningbird/rock-paper-scissors-game/static/js/453.1041aac1.chunk.js",
+    "index.html": "/mondaymorningbird/rock-paper-scissors-game/index.html",
+    "main.90ef2b56.css.map": "/mondaymorningbird/rock-paper-scissors-game/static/css/main.90ef2b56.css.map",
+    "main.5fdf163e.js.map": "/mondaymorningbird/rock-paper-scissors-game/static/js/main.5fdf163e.js.map",
+    "453.1041aac1.chunk.js.map": "/mondaymorningbird/rock-paper-scissors-game/static/js/453.1041aac1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.90ef2b56.css",
+    "static/js/main.5fdf163e.js"
+  ]
+}
